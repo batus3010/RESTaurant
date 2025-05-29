@@ -24,7 +24,10 @@ func NewCreateNewRestaurantBiz(store CreateRestaurantStore) *createNewRestaurant
 	return &createNewRestaurantBiz{store: store}
 }
 
-func (biz createNewRestaurantBiz) CreateNewRestaurant(ctx context.Context, data *restaurantModel.RestaurantCreate) error {
+func (biz createNewRestaurantBiz) CreateNewRestaurant(
+	ctx context.Context,
+	data *restaurantModel.RestaurantCreate,
+) error {
 	err := ensureNotBlank(data.Name, ErrNameIsBlank)
 	if err != nil {
 		return err
