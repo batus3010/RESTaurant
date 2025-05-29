@@ -33,6 +33,7 @@ func main() {
 		restaurant := v1.Group("/restaurants")
 		{
 			restaurant.POST("", restaurantGin.CreateRestaurant(db))
+			restaurant.GET("/:id", restaurantGin.GetRestaurant(db))
 		}
 	}
 
