@@ -33,10 +33,14 @@ func (biz updateRestaurantBiz) UpdateRestaurant(
 	id int,
 	data *restaurantModel.RestaurantUpdate,
 ) error {
+	if err := data.Validate(); err != nil {
+		return err
+	}
+
 	oldData, err := biz.store.FindDataWithCondition(ctx, map[string]interface{}{"id": id})
 
 	if err != nil && errors.Is(err, common.ErrDataNotFound) {
-		return errors.New("data not found")
+		return common.ErrDataNotFound
 	}
 
 	if err != nil {
@@ -44,7 +48,7 @@ func (biz updateRestaurantBiz) UpdateRestaurant(
 	}
 
 	if oldData.Status == 0 {
-		return errors.New("data has been deleted")
+		return common.ErrDataBeenDeleted
 	}
 
 	if err := biz.store.Update(ctx, map[string]interface{}{"id": id}, data); err != nil {

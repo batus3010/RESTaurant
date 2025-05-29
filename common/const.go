@@ -4,4 +4,9 @@ import (
 	"errors"
 )
 
-var ErrDataNotFound = errors.New("data not found")
+var (
+	ErrDataNotFound    = errors.New("data not found")
+	ErrDataBeenDeleted = errors.New("data has been deleted")
+	ErrNameIsBlank     = errors.New("name cannot be blank")
+	ErrAddressIsBlank  = errors.New("address cannot be blank")
+)
