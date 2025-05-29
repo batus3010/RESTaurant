@@ -34,6 +34,7 @@ func main() {
 		{
 			restaurant.POST("", restaurantGin.CreateRestaurant(db))
 			restaurant.GET("/:id", restaurantGin.GetRestaurant(db))
+			restaurant.PUT("/:id", restaurantGin.UpdateRestaurant(db))
 		}
 	}
 
