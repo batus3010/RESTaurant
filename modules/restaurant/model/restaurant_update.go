@@ -6,9 +6,11 @@ import (
 )
 
 type RestaurantUpdate struct {
-	Name    *string `json:"name" gorm:"column:name;"`
-	Address *string `json:"addr" gorm:"column:addr;"`
-	Status  *int    `json:"-" gorm:"column:status;"`
+	Name    *string        `json:"name" gorm:"column:name;"`
+	Address *string        `json:"addr" gorm:"column:addr;"`
+	Status  *int           `json:"-" gorm:"column:status;"`
+	Logo    *common.Image  `json:"logo" gorm:"column:logo;"`
+	Cover   *common.Images `json:"cover" gorm:"column:cover;"`
 }
 
 func (RestaurantUpdate) TableName() string { return Restaurant{}.TableName() }

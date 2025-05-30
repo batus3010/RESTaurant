@@ -3,6 +3,8 @@ package common
 import (
 	"database/sql/driver"
 	"encoding/json"
+	"errors"
+	"fmt"
 )
 
 type Image struct {
@@ -18,13 +20,45 @@ func (Image) TableName() string {
 	return "images"
 }
 
-//func (i *Image) Scan(value interface{}) error {
-//
-//}
+func (i *Image) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
+	}
+	var img Image
+	if err := json.Unmarshal(bytes, &img); err != nil {
+		return err
+	}
+	*i = img
+	return nil
+}
 
+// Value return json value, implement driver.Value interface
 func (i *Image) Value() (driver.Value, error) {
 	if i == nil {
 		return nil, nil
 	}
 	return json.Marshal(i)
+}
+
+type Images []Image
+
+func (i *Images) Value() (driver.Value, error) {
+	if i == nil {
+		return nil, nil
+	}
+	return json.Marshal(i)
+}
+
+func (i *Images) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
+	}
+	var imgs Images
+	if err := json.Unmarshal(bytes, &imgs); err != nil {
+		return err
+	}
+	*i = imgs
+	return nil
 }
