@@ -3,14 +3,13 @@ package restaurantGin
 import (
 	"RESTaurant_v2/components/appctx"
 	restaurantBiz "RESTaurant_v2/modules/restaurant/biz"
-	restaurantModel "RESTaurant_v2/modules/restaurant/model"
 	restaurantStorage "RESTaurant_v2/modules/restaurant/storage"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
-func UpdateRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
+func DeleteRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 	return func(c *gin.Context) {
 
 		id, err := strconv.Atoi(c.Param("id"))
@@ -19,17 +18,10 @@ func UpdateRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 			return
 		}
 
-		var data restaurantModel.RestaurantUpdate
-
-		if err := c.ShouldBind(&data); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
 		store := restaurantStorage.NewSqlStore(appCtx.GetMainDBConnection())
-		biz := restaurantBiz.NewUpdateRestaurantBiz(store)
+		biz := restaurantBiz.NewDeleteRestaurantBiz(store)
 
-		if err := biz.UpdateRestaurant(c.Request.Context(), id, &data); err != nil {
+		if err := biz.DeleteRestaurant(c.Request.Context(), id); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}

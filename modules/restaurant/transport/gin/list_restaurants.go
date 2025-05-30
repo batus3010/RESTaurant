@@ -2,15 +2,15 @@ package restaurantGin
 
 import (
 	"RESTaurant_v2/common"
+	"RESTaurant_v2/components/appctx"
 	restaurantBiz "RESTaurant_v2/modules/restaurant/biz"
 	restaurantModel "RESTaurant_v2/modules/restaurant/model"
 	restaurantStorage "RESTaurant_v2/modules/restaurant/storage"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"net/http"
 )
 
-func ListRestaurant(db *gorm.DB) func(*gin.Context) {
+func ListRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 	return func(c *gin.Context) {
 		var paging common.Paging
 		var filter restaurantModel.Filter
@@ -30,7 +30,7 @@ func ListRestaurant(db *gorm.DB) func(*gin.Context) {
 			return
 		}
 
-		store := restaurantStorage.NewSqlStore(db)
+		store := restaurantStorage.NewSqlStore(appCtx.GetMainDBConnection())
 		biz := restaurantBiz.NewListRestaurantBiz(store)
 
 		result, err := biz.ListRestaurant(c.Request.Context(), &filter, &paging)

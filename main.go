@@ -1,6 +1,7 @@
 package main
 
 import (
+	"RESTaurant_v2/components/appctx"
 	restaurantGin "RESTaurant_v2/modules/restaurant/transport/gin"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -20,6 +21,7 @@ func main() {
 	log.Println(db)
 
 	db = db.Debug()
+	appCtx := appctx.NewAppContext(db)
 
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
@@ -32,10 +34,11 @@ func main() {
 	{
 		restaurant := v1.Group("/restaurants")
 		{
-			restaurant.POST("", restaurantGin.CreateRestaurant(db))
-			restaurant.GET("/:id", restaurantGin.GetRestaurant(db))
-			restaurant.PUT("/:id", restaurantGin.UpdateRestaurant(db))
-			restaurant.GET("", restaurantGin.ListRestaurant(db))
+			restaurant.POST("", restaurantGin.CreateRestaurant(appCtx))
+			restaurant.GET("/:id", restaurantGin.GetRestaurant(appCtx))
+			restaurant.PUT("/:id", restaurantGin.UpdateRestaurant(appCtx))
+			restaurant.GET("", restaurantGin.ListRestaurant(appCtx))
+			restaurant.DELETE("/:id", restaurantGin.DeleteRestaurant(appCtx))
 		}
 	}
 

@@ -1,15 +1,15 @@
 package restaurantGin
 
 import (
+	"RESTaurant_v2/components/appctx"
 	restaurantBiz "RESTaurant_v2/modules/restaurant/biz"
 	restaurantStorage "RESTaurant_v2/modules/restaurant/storage"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"net/http"
 	"strconv"
 )
 
-func GetRestaurant(db *gorm.DB) func(*gin.Context) {
+func GetRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 	return func(c *gin.Context) {
 
 		id, err := strconv.Atoi(c.Param("id"))
@@ -18,7 +18,7 @@ func GetRestaurant(db *gorm.DB) func(*gin.Context) {
 			return
 		}
 
-		store := restaurantStorage.NewSqlStore(db)
+		store := restaurantStorage.NewSqlStore(appCtx.GetMainDBConnection())
 		biz := restaurantBiz.NewGetRestaurantBiz(store)
 
 		data, err := biz.GetRestaurant(c.Request.Context(), id)

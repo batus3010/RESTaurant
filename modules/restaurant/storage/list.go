@@ -19,6 +19,8 @@ func (s *sqlStore) ListDataWithCondition(
 		db = db.Where("owner_id = ?", filter.UserId)
 	}
 
+	db = db.Where("status NOT IN (0)") // for deleting
+
 	if err := db.Table(restaurantModel.Restaurant{}.TableName()).Count(&paging.Total).Error; err != nil {
 		return nil, err
 	}
