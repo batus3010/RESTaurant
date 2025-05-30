@@ -7,8 +7,9 @@ import (
 
 type RestaurantCreate struct {
 	common.SQLModel
-	Name    string `json:"name" gorm:"column:name;"`
-	Address string `json:"addr" gorm:"column:addr;"`
+	Name    string        `json:"name" gorm:"column:name;"`
+	Address string        `json:"addr" gorm:"column:addr;"`
+	Logo    *common.Image `json:"logo" gorm:"column:logo;"`
 }
 
 func (RestaurantCreate) TableName() string { return Restaurant{}.TableName() }
