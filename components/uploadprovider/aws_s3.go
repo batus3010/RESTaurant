@@ -2,15 +2,12 @@ package uploadprovider
 
 import (
 	"RESTaurant_v2/common"
-	"bytes"
 	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
 	"log"
-	"net/http"
 )
 
 type awsS3Provider struct {
@@ -47,20 +44,21 @@ func NewAWSS3Provider(bucketName, region, apiKey, secret, domain string) *awsS3P
 }
 
 func (provider *awsS3Provider) SaveFileUploaded(ctx context.Context, data []byte, destination string) (*common.Image, error) {
-	fileBytes := bytes.NewReader(data)
-	fileType := http.DetectContentType(data)
-
-	_, err := s3.New(provider.session).PutObject(&s3.PutObjectInput{
-		Bucket:      aws.String(provider.bucketName),
-		Key:         aws.String(destination), // file path stored in s3
-		ACL:         aws.String("private"),
-		ContentType: aws.String(fileType),
-		Body:        fileBytes,
-	})
-
-	if err != nil {
-		return nil, err
-	}
+	// TODO: uncomment for s3 configuration later
+	//fileBytes := bytes.NewReader(data)
+	//fileType := http.DetectContentType(data)
+	//
+	//_, err := s3.New(provider.session).PutObject(&s3.PutObjectInput{
+	//	Bucket:      aws.String(provider.bucketName),
+	//	Key:         aws.String(destination), // file path stored in s3
+	//	ACL:         aws.String("private"),
+	//	ContentType: aws.String(fileType),
+	//	Body:        fileBytes,
+	//})
+	//
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	img := &common.Image{
 		Url:       fmt.Sprintf("%s/%s", provider.domain, destination),

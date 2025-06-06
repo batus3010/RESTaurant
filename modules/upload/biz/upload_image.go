@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	_ "image/jpeg"
 	_ "image/png" // important: add this to decode png files
 	"io"
 	"log"
@@ -47,7 +48,7 @@ func (biz *uploadBiz) Upload(ctx context.Context, data []byte, folder, fileName 
 	img, err := biz.provider.SaveFileUploaded(ctx, data, fmt.Sprintf("%s/%s", folder, fileName))
 
 	if err != nil {
-		return nil, errors.New("cannot save image file")
+		return nil, errors.New("cannot save image file, " + err.Error())
 	}
 
 	img.Width = w
