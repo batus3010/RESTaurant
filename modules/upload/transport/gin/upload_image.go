@@ -1,6 +1,7 @@
 package uploadGin
 
 import (
+	"RESTaurant_v2/common"
 	"RESTaurant_v2/components/appctx"
 	uploadBiz "RESTaurant_v2/modules/upload/biz"
 	"github.com/gin-gonic/gin"
@@ -37,6 +38,6 @@ func UploadImage(appCtx appctx.AppContext) func(*gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"data": img})
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(img))
 	}
 }

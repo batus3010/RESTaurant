@@ -1,6 +1,7 @@
 package restaurantGin
 
 import (
+	"RESTaurant_v2/common"
 	"RESTaurant_v2/components/appctx"
 	restaurantBiz "RESTaurant_v2/modules/restaurant/biz"
 	restaurantModel "RESTaurant_v2/modules/restaurant/model"
@@ -34,6 +35,6 @@ func UpdateRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"data": true})
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
 	}
 }
