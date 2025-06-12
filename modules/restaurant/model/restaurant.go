@@ -2,6 +2,8 @@ package restaurantModel
 
 import "RESTaurant_v2/common"
 
+const EntityName = "Restaurant"
+
 type Restaurant struct {
 	common.SQLModel
 	Name    string         `json:"name" gorm:"column:name;"` // tag

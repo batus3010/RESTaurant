@@ -1,6 +1,7 @@
 package restaurantBiz
 
 import (
+	"RESTaurant_v2/common"
 	restaurantModel "RESTaurant_v2/modules/restaurant/model"
 	"context"
 )
@@ -27,11 +28,11 @@ func (biz createNewRestaurantBiz) CreateNewRestaurant(
 	data *restaurantModel.RestaurantCreate,
 ) error {
 	if err := data.Validate(); err != nil {
-		return err
+		return common.ErrorInvalidRequest(err)
 	}
 
 	if err := biz.store.Create(ctx, data); err != nil {
-		return err
+		return common.ErrorCannotCreateEntity(restaurantModel.EntityName, err)
 	}
 
 	return nil

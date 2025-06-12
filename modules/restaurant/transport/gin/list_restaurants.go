@@ -36,7 +36,7 @@ func ListRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 		result, err := biz.ListRestaurant(c.Request.Context(), &filter, &paging)
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, err)
 			return
 		}
 		c.JSON(http.StatusOK, common.NewSuccessResponse(result, paging, filter))

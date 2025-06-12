@@ -22,7 +22,7 @@ func (s *sqlStore) ListDataWithCondition(
 	db = db.Where("status NOT IN (0)") // for deleting
 
 	if err := db.Table(restaurantModel.Restaurant{}.TableName()).Count(&paging.Total).Error; err != nil {
-		return nil, err
+		return nil, common.ErrorDB(err)
 	}
 
 	offset := (paging.Page - 1) * paging.Limit
@@ -30,7 +30,7 @@ func (s *sqlStore) ListDataWithCondition(
 		Offset(offset).
 		Order("id desc").
 		Find(&result).Error; err != nil {
-		return nil, err
+		return nil, common.ErrorDB(err)
 	}
 	return result, nil
 }
