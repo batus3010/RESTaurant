@@ -16,23 +16,20 @@ func UpdateRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+			panic(common.ErrorInvalidRequest(err))
 		}
 
 		var data restaurantModel.RestaurantUpdate
 
 		if err := c.ShouldBind(&data); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+			panic(common.ErrorInvalidRequest(err))
 		}
 
 		store := restaurantStorage.NewSqlStore(appCtx.GetMainDBConnection())
 		biz := restaurantBiz.NewUpdateRestaurantBiz(store)
 
 		if err := biz.UpdateRestaurant(c.Request.Context(), id, &data); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+			panic(err)
 		}
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
