@@ -3,6 +3,7 @@ package main
 import (
 	"RESTaurant_v2/components/appctx"
 	"RESTaurant_v2/components/uploadprovider"
+	"RESTaurant_v2/middleware"
 	restaurantGin "RESTaurant_v2/modules/restaurant/transport/gin"
 	uploadGin "RESTaurant_v2/modules/upload/transport/gin"
 	"github.com/gin-gonic/gin"
@@ -34,6 +35,8 @@ func main() {
 	appCtx := appctx.NewAppContext(db, s3Provider)
 
 	r := gin.Default()
+	r.Use(middleware.Recover(appCtx)) // global middleware
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",

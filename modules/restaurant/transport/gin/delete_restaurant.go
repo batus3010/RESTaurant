@@ -23,7 +23,7 @@ func DeleteRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 		biz := restaurantBiz.NewDeleteRestaurantBiz(store)
 
 		if err := biz.DeleteRestaurant(c.Request.Context(), id); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusBadRequest, err)
 			return
 		}
 

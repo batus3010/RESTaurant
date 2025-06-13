@@ -36,7 +36,7 @@ func (biz deleteRestaurantBiz) DeleteRestaurant(
 	oldData, err := biz.store.FindDataWithCondition(ctx, map[string]interface{}{"id": id})
 
 	if err != nil && errors.Is(err, common.ErrDataNotFound) {
-		return common.ErrDataNotFound
+		return common.ErrorEntityNotFound(restaurantModel.EntityName, err)
 	}
 
 	if err != nil {

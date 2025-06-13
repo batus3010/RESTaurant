@@ -69,7 +69,11 @@ func (e *AppError) Error() string {
 }
 
 func ErrorDB(err error) *AppError {
-	return NewFullErrorResponse(http.StatusInternalServerError, err, "something went wrong with db", err.Error(), "DB_ERROR")
+	return NewFullErrorResponse(http.StatusInternalServerError, err, "something went wrong with db", err.Error(), "ErrDB")
+}
+
+func ErrorInternal(err error) *AppError {
+	return NewFullErrorResponse(http.StatusInternalServerError, err, "something went wrong in the server", err.Error(), "ErrInternal")
 }
 
 func ErrorInvalidRequest(err error) *AppError {
