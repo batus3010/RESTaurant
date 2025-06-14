@@ -7,13 +7,12 @@ import (
 	restaurantStorage "RESTaurant_v2/modules/restaurant/storage"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
 
 func GetRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 	return func(c *gin.Context) {
 
-		id, err := strconv.Atoi(c.Param("id"))
+		uid, err := common.FromBase58(c.Param("id"))
 		if err != nil {
 			panic(common.ErrorInvalidRequest(err))
 		}
@@ -21,11 +20,13 @@ func GetRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 		store := restaurantStorage.NewSqlStore(appCtx.GetMainDBConnection())
 		biz := restaurantBiz.NewGetRestaurantBiz(store)
 
-		data, err := biz.GetRestaurant(c.Request.Context(), id)
+		data, err := biz.GetRestaurant(c.Request.Context(), int(uid.GetLocalID()))
 
 		if err != nil {
 			panic(err)
 		}
+
+		data.Mask(common.DbTypeRestaurant)
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
 	}

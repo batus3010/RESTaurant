@@ -32,6 +32,10 @@ func ListRestaurant(appCtx appctx.AppContext) func(*gin.Context) {
 
 		result, err := biz.ListRestaurant(c.Request.Context(), &filter, &paging)
 
+		for i := range result {
+			result[i].Mask(common.DbTypeRestaurant)
+		}
+
 		if err != nil {
 			panic(err)
 		}

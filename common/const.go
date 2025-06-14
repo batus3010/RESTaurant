@@ -10,3 +10,7 @@ var (
 	ErrNameIsBlank     = errors.New("name cannot be blank")
 	ErrAddressIsBlank  = errors.New("address cannot be blank")
 )
+
+const (
+	DbTypeRestaurant = 1
+)
